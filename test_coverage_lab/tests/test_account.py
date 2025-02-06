@@ -164,6 +164,67 @@ def test_valid_withdrawal():
 # - Ensure that `change_role()` correctly updates an account’s role.
 # - Verify that the updated role is stored in the database.
 
+# ===========================
+# Test: Test account deactivation/reactivation
+# Author: Jesse Ortega
+# Date: 2/5/2025
+# Description: Ensure accounts can be deactivated.
+# - Verify that deactivated accounts cannot perform certain actions. (deposit, withdraw)
+# - Ensure reactivation correctly restores the account.
+# ===========================
+
+def test_account_deactivate():
+    """Verify that an account can be deactivated"""
+    # Create an activated test account
+    test_account = Account(disabled=False)
+
+    # Assert that the test account is initialized as intented
+    assert test_account.disabled == False
+
+    # Deactivate the test account
+    test_account.deactivate()
+
+    # Assert that the test account is now disabled
+    assert test_account.disabled == True
+
+def test_account_reactivate():
+    """Verify that a disabled account can be reactivated"""
+    # Create a deactivated test account
+    test_account = Account(disabled=True)
+
+    # Assert that the test account is initialized as intented
+    assert test_account.disabled == True
+
+    # Reactivate the test account
+    test_account.reactivate()
+
+    # Assert that the test account is no longer disabled
+    assert test_account.disabled == False
+
+def test_disabled_account_deposit():
+    """Verify that disabled accounts cannot perform certain actions: desposit"""
+    # Create a deactivated test account with an initial balance
+    test_account = Account(disabled=True, balance=100.00)
+
+    # Assert that the test account is initialized as intented
+    assert test_account.disabled == True and test_account.balance == 100.00
+
+    # Attempt to deposit funds into the disabled account
+    with pytest.raises(DataValidationError):
+        test_account.deposit(50.00)
+
+def test_disabled_account_withdraw():
+    """Verify that disabled accounts cannot perform certain actions: withdraw"""
+    # Create a deactivated test account with an initial balance
+    test_account = Account(disabled=True, balance=100.00)
+
+    # Assert that the test account is initialized as intented
+    assert test_account.disabled == True and test_account.balance == 100.00
+
+    # Attempt to withdraw funds from the disabled account
+    with pytest.raises(DataValidationError):
+        test_account.withdraw(50.00)
+
 # TODO 10: Test Invalid Role Assignment
 # - Ensure that assigning an invalid role raises an appropriate error.
 # - Verify that only allowed roles (`admin`, `user`, etc.) can be set.
