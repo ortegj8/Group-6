@@ -1,0 +1,27 @@
+const Login = () => {
+    const [username, setUsername] = useState("");
+    const [password, setPassword] = useState("");
+    const [message, setMessage] = useState("");
+
+    // Handle form submission (regular login)
+    const handleSubmit = async (event) => {
+        event.preventDefault();
+
+        try {
+            const response = await fetch("http://localhost:8000/api/auth/login/", {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({ username, password }),
+            });
+
+            const data = await response.json();
+
+            if (response.ok) {
+                setMessage({ type: "success", text: ✅ Welcome, ${data.user.username}! });
+            } else {
+                setMessage({ type: "error", text: ❌ ${data.error} });
+            }
+        } catch (error) {
+            setMessage({ type: "error", text: "❌ Server error. Please try again." });
+        }
+    };
