@@ -96,7 +96,11 @@ class TestCounterEndpoints:
 
     # ===========================
     # Test: Retrieve total count of all counters
+<<<<<<< HEAD
+    # Author: Student 1: Steven Fojas.
+=======
     # Author: Student 1: Steven Fojas
+>>>>>>> upstream/main
     # Modification: Add assertion to check the total value is correct.
     # ===========================
     def test_get_total_counters(self, client):
